@@ -1,0 +1,22 @@
+#!/bin/bash
+
+URL=http://vre2.upei.ca/awstatshtml/apc_info.php
+
+DATA=`curl -s $URL`
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title APC Fragmentation
+graph_vlabel percent
+graph_category APC-PHP
+graph_args -l 0
+apcg.label fragmentation
+EOM
+        exit 0;;
+esac
+
+
+FRAG=`echo $DATA | awk -F: '{ print $15 }' | awk '{ print $1 }'`
+
+echo "apcg.value" $FRAG

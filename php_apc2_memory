@@ -1,0 +1,33 @@
+#!/bin/bash
+
+URL=http://vre2.upei.ca/awstatshtml/apc_info.php
+
+DATA=`curl -s $URL`
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title APC Memory Usage
+graph_vlabel bytes
+graph_category APC-PHP
+graph_args -l 0
+apcu.label used
+apcu.draw AREA
+apcf.label free
+apcf.draw STACK
+apct.label total
+EOM
+        exit 0;;
+esac
+
+USEDMEM=`echo $DATA | awk -F: '{ print $3 }' | awk '{ print $1 }'`
+
+FREEMEM=`echo $DATA | awk -F: '{ print $4 }' | awk '{ print $1 }'`
+
+TOTMEM=`echo $DATA | awk -F: '{ print $2 }' | awk '{ print $1 }'`
+
+echo "apcu.value" $USEDMEM
+
+echo "apcf.value" $FREEMEM
+
+echo "apct.value" $TOTMEM

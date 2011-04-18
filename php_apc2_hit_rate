@@ -1,0 +1,27 @@
+#!/bin/bash
+
+URL=http://vre2.upei.ca/awstatshtml/apc_info.php
+
+DATA=`curl -s $URL`
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title APC Hit Rate
+graph_vlabel percent
+graph_category APC-PHP
+graph_args --upper-limit 100 -l 0
+apch.label hits
+apcm.label misses
+EOM
+        exit 0;;
+esac
+
+
+HIT=`echo $DATA | awk -F: '{ print $5 }' | awk '{ print $1 }'`
+MISS=`echo $DATA | awk -F: '{ print $6 }' | awk '{ print $1 }'`
+
+echo "apch.value" $HIT
+
+
+echo "apcm.value" $MISS

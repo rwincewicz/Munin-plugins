@@ -1,0 +1,38 @@
+#!/bin/bash
+
+UNAME=
+
+PWD=
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title Tomcat sessions
+graph_vlabel number of sessions
+graph_category tomcat
+graph_args -l 0
+fedora.label fedora
+gsearch.label gsearch
+solr.label solr
+djatoka.label djatoka
+iiv.label iiv
+EOM
+        exit 0;;
+esac
+
+
+FEDORA=`curl -B -s http://$UNAME:$PWD@localhost:8080/manager/list | grep fedora | grep -v demo | grep -v search | awk -F: '{ print $3 }'`
+
+GSEARCH=`curl -B -s http://$UNAME:$PWD@localhost:8080/manager/list | grep gsearch | awk -F: '{ print $3 }'`
+
+SOLR=`curl -B -s http://$UNAME:$PWD@localhost:8080/manager/list | grep solr | awk -F: '{ print $3 }'`
+
+DJATOKA=`curl -B -s http://$UNAME:$PWD@localhost:8080/manager/list | grep djatoka | awk -F: '{ print $3 }'`
+
+IIV=`curl -B -s http://$UNAME:$PWD@localhost:8080/manager/list | grep iiv | awk -F: '{ print $3 }'`
+
+echo "fedora.value" $FEDORA
+echo "gsearch.value" $GSEARCH
+echo "solr.value" $SOLR
+echo "djatoka.value" $DJATOKA
+echo "iiv.value" $IIV

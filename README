@@ -1,0 +1,5 @@
+***** Munin-plugins *****
+
+These are a few plugins I've written for munin in bash. We had specific needs for each of these and were written with our system in mind, they may work elsewhere but they've not been tested.
+
+For the tomcat_sessions plugin you will need to add a valid tomcat username and password to the script in order for it to work.
